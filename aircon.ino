@@ -1,37 +1,34 @@
-int PowerOn = D1;
+int PowerOnACpin = D1;
+int tempDown = D2;
 int tempUp = D3;
-int tempDwn = D2;
 
 void setup() {
 
-    //Pins and outputs
-    pinMode(PowerOn,OUTPUT);
+    // Pins and outputs
+    pinMode(PowerOnACpin,OUTPUT);
     pinMode(tempUp,OUTPUT);
-    pinMode(tempDwn,OUTPUT);
+    pinMode(tempDown,OUTPUT);
 
-    // Make them all nighty night
-    digitalWrite(PowerOn,LOW);
+    // Set all pins to low
+    digitalWrite(PowerOnACpin,LOW);
     digitalWrite(tempUp,LOW);
-    digitalWrite(tempDwn,LOW);
+    digitalWrite(tempDown,LOW);
 
     // IFTT functions
-    Particle.function("POOWER", POOWER);
+    Particle.function("PowerOnAC", PowerOnAC);
     Particle.function("tempyUp", tempyUp);
-    Particle.function("tempyDwn", tempyDwn);
+    Particle.function("tempyDown", tempyDown);
 }
 
 void loop() {
 
 }
 
-int POOWER(String command) {
+int PowerOnAC(String command) {
     if (command=="On") {
-        digitalWrite(PowerOn,HIGH);
-        // We will set the digital pin fanOff on
+        digitalWrite(PowerOnACpin,HIGH);
         delay(300);
-        // A delay of 100 milliseconds are set on all commands to ensure the relay gets toggled
-        digitalWrite(PowerOn,LOW);
-        // We will set the digital pin off
+        digitalWrite(PowerOnACpin,LOW);
         return 1;
     }
     else return -1;
@@ -39,45 +36,28 @@ int POOWER(String command) {
 }
 
 int tempyUp(String command) {
-    if (command=="Up1") {
-        digitalWrite(tempUp,HIGH);
-        // We will set the digital pin fanOff on
-        delay(100);
-        // A delay of 100 milliseconds are set on all commands to ensure the relay gets toggled
-        digitalWrite(tempUp,LOW);
-
-        delay(200);
-
-        digitalWrite(tempUp,HIGH);
-        // We will set the digital pin fanOff on
-        delay(100);
-        // A delay of 100 milliseconds are set on all commands to ensure the relay gets toggled
-        digitalWrite(tempUp,LOW);
-
-        return 1;
-    }
-    else return -1;
-
+    if (command=="Up") {
+        int x = x;
+        int i = -1;
+        do {
+            i++;
+            digitalWrite(tempUp,HIGH);
+            delay(100);
+            digitalWrite(tempUp,LOW);
+        } while( i<=x );return 1;
+    } else return -1;
 }
 
-int tempyDwn(String command) {
-    if (command=="Up1") {
-        digitalWrite(tempDwn,HIGH);
-        // We will set the digital pin fanOff on
-        delay(100);
-        // A delay of 100 milliseconds are set on all commands to ensure the relay gets toggled
-        digitalWrite(tempDwn,LOW);
-
-        delay(200);
-
-        digitalWrite(tempDwn,HIGH);
-        // We will set the digital pin fanOff on
-        delay(100);
-        // A delay of 100 milliseconds are set on all commands to ensure the relay gets toggled
-        digitalWrite(tempDwn,LOW);
-
+int tempyDown(String command) {
+    if(command=="Down"){
+        int x = x;
+        int i = -1;
+        do {
+            i++;
+            digitalWrite(tempDown,HIGH);
+            delay(100);
+            digitalWrite(tempDown,LOW);
+        } while( i<=x );
         return 1;
-    }
-    else return -1;
-
+    } else return -1;
 }
