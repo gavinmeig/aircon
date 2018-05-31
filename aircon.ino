@@ -1,6 +1,7 @@
 int PowerOnACpin = D1;
 int tempDown = D2;
 int tempUp = D3;
+int degrees = 0;
 
 void setup() {
 
@@ -36,28 +37,26 @@ int PowerOnAC(String command) {
 }
 
 int tempyUp(String command) {
-    if (command=="Up") {
-        int x = x;
+    if (degrees > 0) {
         int i = -1;
         do {
             i++;
             digitalWrite(tempUp,HIGH);
             delay(100);
             digitalWrite(tempUp,LOW);
-        } while( i<=x );return 1;
+        } while( i<=degrees );return 1;
     } else return -1;
 }
 
 int tempyDown(String command) {
-    if(command=="Down"){
-        int x = x;
+    if(degrees > 0){
         int i = -1;
         do {
             i++;
             digitalWrite(tempDown,HIGH);
             delay(100);
             digitalWrite(tempDown,LOW);
-        } while( i<=x );
+        } while( i<=degrees );
         return 1;
     } else return -1;
 }
