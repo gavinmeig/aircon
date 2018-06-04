@@ -1,62 +1,79 @@
-int PowerOnACpin = D1;
-int tempDown = D2;
-int tempUp = D3;
-int degrees = 0;
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 
-void setup() {
+int PowerAcPIN = D1;
+int tempUpPIN = D2;
+int tempDownPIN = D3;
+int degrees;
 
-    // Pins and outputs
-    pinMode(PowerOnACpin,OUTPUT);
-    pinMode(tempUp,OUTPUT);
-    pinMode(tempDown,OUTPUT);
+void setup()
+{
 
-    // Set all pins to low
-    digitalWrite(PowerOnACpin,LOW);
-    digitalWrite(tempUp,LOW);
-    digitalWrite(tempDown,LOW);
+  pinMode(PowerAcPIN, OUTPUT);
+  pinMode(tempUpPIN, OUTPUT);
+  pinMode(tempDownPIN, OUTPUT);
 
-    // IFTT functions
-    Particle.function("PowerOnAC", PowerOnAC);
-    Particle.function("tempyUp", tempyUp);
-    Particle.function("tempyDown", tempyDown);
+  digitalWrite(PowerAcPIN, LOW);
+  digitalWrite(tempUpPIN, LOW);
+  digitalWrite(tempDownPIN, LOW);
+
+  Particle.function("PowerAc", PowerAc);
+  Particle.function("tempUp", tempUp);
+  Particle.function("tempDown", tempDown);
 }
 
-void loop() {
-
+void loop()
+{
 }
 
-int PowerOnAC(String command) {
-    if (command=="On") {
-        digitalWrite(PowerOnACpin,HIGH);
-        delay(300);
-        digitalWrite(PowerOnACpin,LOW);
-        return 1;
+int PowerAc(String command)
+{
+  if (command == "power")
+  {
+    digitalWrite(PowerAcPIN, HIGH);
+    digitalWrite(PowerAcPIN, LOW);
+
+    return 1;
+  }
+  else
+    return -1;
+}
+
+int tempUp(String command)
+{
+  degrees = atoi(command);
+
+  if (isdigit(degrees))
+  {
+
+    for (int i = 0; i < degrees; ++i)
+    {
+      digitalWrite(tempUpPIN, HIGH);
+      digitalWrite(tempUpPIN, LOW);
     }
-    else return -1;
 
+    return 1;
+  }
+  else
+    return -1;
 }
 
-int tempyUp(String command) {
-    if (degrees > 0) {
-        int i = -1;
-        do {
-            i++;
-            digitalWrite(tempUp,HIGH);
-            delay(100);
-            digitalWrite(tempUp,LOW);
-        } while( i<=degrees );return 1;
-    } else return -1;
-}
+int tempDown(String command)
+{
+  degrees = atoi(command);
 
-int tempyDown(String command) {
-    if(degrees > 0){
-        int i = -1;
-        do {
-            i++;
-            digitalWrite(tempDown,HIGH);
-            delay(100);
-            digitalWrite(tempDown,LOW);
-        } while( i<=degrees );
-        return 1;
-    } else return -1;
+  if (isdigit(degrees))
+  {
+
+    for (int i = 0; i < degrees; ++i)
+    {
+      digitalWrite(tempDownPIN, HIGH);
+      digitalWrite(tempDownPIN, LOW);
+    }
+
+    return 1;
+  }
+  else
+    return -1;
 }
